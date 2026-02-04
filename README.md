@@ -51,21 +51,33 @@ This document outlines the code structure related to **LHS (Left-Hand Side) subs
 
 ## III. Call Relationship Diagram
 
-```text
-train.py 
-  └── calls ssgn_training.py
-       └── calls ssgn_core.py (lm_step_ssgn)
-            ├── 1. Sampling: fps_utils.py (get_lhs_indices_fps)
-            ├── 2. Weighting: fps_utils.py (compute_lhs_weights_voronoi)
-            ├── 3. Plotting: camera_vis.py (visualize_coverage)
-            └── 4. Solving: ssgn_core.py (linear_solve_ssgn)
+Execution flows from the entry script into the training loop, then into each LM step where sampling, weighting, optional visualization, and the linear solve are performed in order.
+
+```
+train.py
+  └── from ssgn_training import training_ssgn
+        └── training_ssgn(...)
+              └── lm_step_ssgn(...)                    [ssgn_core.py]
+                    ├── 1. get_lhs_indices_fps_vectorized()   [fps_utils.py]
+                    ├── 2. compute_lhs_weights_voronoi()      [fps_utils.py]
+                    ├── 3. visualize_cameras_with_projection() [camera_vis.py, optional]
+                    └── 4. linear_solve_ssgn()                [ssgn_core.py]
+```
+
+**Per-step flow inside `lm_step_ssgn`:**  
+FPS Sampling → Voronoi Weighting → Coverage plot (optional) → Linear solve → Parameter update.
+
+---
+
 ## IV. How to Run
-Prerequisites: Ensure diff-gaussian-rasterization and simple-knn are installed.
+
+**Prerequisites:** Ensure `diff-gaussian-rasterization` and `simple-knn` are installed (see main project README).
 
 ### Example 1: Full SSGN Training (Recommended)
+
 Enables FPS sampling, Voronoi weighting, and SSGN mode.
 
-Bash
+```bash
 python train.py \
     -s /path/to/dataset/garden \
     --root_out ./output/garden_fps \
@@ -77,17 +89,20 @@ python train.py \
     --ssgn_size_rhs 20 \
     --ssgn_size_lhs 12 \
     --num_sgd_iterations_before_gn 500
-    
-### Example 2: Low Memory Mode (Consumer GPU)
-Uses LHS Downsampling (--lhs_downsample_scale) to significantly reduce VRAM usage. For example, downscaling LHS images by 4x for Hessian computation, while keeping RHS at full resolution for gradients.
+```
 
-Bash
+### Example 2: Low Memory Mode (Consumer GPU)
+
+Uses **LHS downsampling** (`--lhs_downsample_scale`) to reduce VRAM: LHS images are downscaled for Hessian computation while RHS stays at full resolution for gradients.
+
+```bash
 python train.py \
     -s /path/to/dataset/garden \
     --root_out ./output/garden_low_mem \
     --eval \
     --enable_ssgn \
     --enable_fps_lhs \
-    --lhs_downsample_scale 4.0 \
+    --lhs_downsample_scale 4 \
     --ssgn_size_lhs 10 \
     --iterations 3000
+```
