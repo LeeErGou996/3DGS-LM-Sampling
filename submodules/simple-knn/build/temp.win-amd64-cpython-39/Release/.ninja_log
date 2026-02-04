@@ -1,0 +1,6 @@
+# ninja log v7
+25	50151	7904835731885084	C:/InDeutschland/3IN2390/kaggle/3DGS-LM/submodules/simple-knn/build/temp.win-amd64-cpython-39/Release/ext.obj	e840007314a25615
+38	139418	7904835732021001	C:/InDeutschland/3IN2390/kaggle/3DGS-LM/submodules/simple-knn/build/temp.win-amd64-cpython-39/Release/simple_knn.obj	3811380032b4525
+60	215413	7904835732220948	C:/InDeutschland/3IN2390/kaggle/3DGS-LM/submodules/simple-knn/build/temp.win-amd64-cpython-39/Release/spatial.obj	3b7f2f927fd938fc
+209	13355	7904839425296145	C:/InDeutschland/3IN2390/kaggle/3DGS-LM/submodules/simple-knn/build/temp.win-amd64-cpython-39/Release/simple_knn.obj	c5f2a3c3465bf608
+218	61493	7904839425381390	C:/InDeutschland/3IN2390/kaggle/3DGS-LM/submodules/simple-knn/build/temp.win-amd64-cpython-39/Release/spatial.obj	205d677f918e9b11
