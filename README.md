@@ -59,10 +59,10 @@ train.py
             ├── 2. Weighting: fps_utils.py (compute_lhs_weights_voronoi)
             ├── 3. Plotting: camera_vis.py (visualize_coverage)
             └── 4. Solving: ssgn_core.py (linear_solve_ssgn)
-IV. How to Run
+## IV. How to Run
 Prerequisites: Ensure diff-gaussian-rasterization and simple-knn are installed.
 
-Example 1: Full SSGN Training (Recommended)
+### Example 1: Full SSGN Training (Recommended)
 Enables FPS sampling, Voronoi weighting, and SSGN mode.
 
 Bash
@@ -77,7 +77,8 @@ python train.py \
     --ssgn_size_rhs 20 \
     --ssgn_size_lhs 12 \
     --num_sgd_iterations_before_gn 500
-Example 2: Low Memory Mode (Consumer GPU)
+    
+### Example 2: Low Memory Mode (Consumer GPU)
 Uses LHS Downsampling (--lhs_downsample_scale) to significantly reduce VRAM usage. For example, downscaling LHS images by 4x for Hessian computation, while keeping RHS at full resolution for gradients.
 
 Bash
